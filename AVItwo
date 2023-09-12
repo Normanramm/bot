@@ -1,0 +1,26 @@
+# Bot telegram on Python
+# The simplest bot for telegram
+# Сan only answer questions in the text
+# There will be time I will bring it to perfection!
+
+
+
+import telebot
+import openai
+
+bot = telebot.TeleBot("") # Add telegram key here
+openai.api_key = ""       # Add key here API
+
+@bot.message_handler(content_types=["text"])
+def handle_text(message):
+    response = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=f"{message.text}",
+        max_tokens=1024,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+    bot.send_message(message.chat.id, response.choices[0].text)
+
+bot.polling()
